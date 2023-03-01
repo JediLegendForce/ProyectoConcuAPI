@@ -1,9 +1,39 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import {Employee} from "./employee.js";
+import fs from 'fs';
+import express from 'express';
+import bodyParser from 'body-parser';
 
+
+const port=8000;
 const app = express();
 app.use(bodyParser.json());
 
-console.log("TEST")
+//datos
+var employees;
+fs.readFile('./employees.json','utf8', (err, jsonString) => {
+    if (err) {
+        console.log("File read failed:", err)
+        return
+    }
+    console.log('File data:', jsonString) 
+    employees=JSON.parse(jsonString);
+});
+//////////////////////////////////////////////////////////
 
-app.listen(3000);
+//GETS
+app.get("/employees",(req,res)=>{
+    res.send(employees);
+});
+
+app.get("/employees/:username",(req,res)=>{
+    employees.forEach(element => {
+        if(element.username==req.params.username){
+            res.send(element);
+        }
+    });
+})
+
+////////////////////////////////////////////
+app.listen(port, ()=> {
+    console.log('Listening on port '+port)
+});

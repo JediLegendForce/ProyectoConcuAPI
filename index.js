@@ -1,3 +1,4 @@
+/*
 import {Employee} from "./employee.js";
 import fs from 'fs';
 import express from 'express';
@@ -37,3 +38,21 @@ app.get("/employees/:username",(req,res)=>{
 app.listen(port, ()=> {
     console.log('Listening on port '+port)
 });
+*/
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+
+require("dotenv").config();
+
+const app = express();
+
+
+app.use(bodyParser.json());
+
+const employeeRoutes = require("./Routes/employeeRoute");
+
+app.use("/employee", employeeRoutes);
+
+app.listen(8000);
